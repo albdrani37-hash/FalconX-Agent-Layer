@@ -1,40 +1,25 @@
-# FalconX Agent Layer
+# FalconX Agent Layer — Prototype
 
-A controlled AI interaction layer designed to manage, filter, and structure agent behavior within the FalconX system.
+A small Python demonstration of request classification, rule-based decisions and local JSON logging.
 
-## Overview
+## What the implementation does
 
-The Agent Layer acts as an intelligent interface between decision-making components and execution systems. It ensures that all AI-driven actions follow predefined rules, constraints, and validation logic.
+`agent/agent_layer.py` classifies message/action text with English keyword checks and returns an `ALLOW`, `REVIEW` or `BLOCK` label. It records the input, classification and decision in a local log. The optional `human_approval` input is a Boolean supplied by the caller.
 
-## Purpose
+## Run the example
 
-- Prevent uncontrolled AI behavior
-- Enforce structured decision pipelines
-- Introduce validation before execution
-- Improve system reliability in live environments
+```sh
+python3 test_agent_layer.py
+```
 
-## Architecture
+Python standard library only. The example prints a decision for a trading-related request and writes a local log. Despite its filename, it is a demonstration script, not an assertion-based test suite.
 
-The Agent Layer sits between:
+## Important implementation boundaries
 
-Signal Generation → Agent Layer → Execution Engine
+This prototype does not invoke, intercept or authorize real tools. Its keyword checks are not a prompt-injection defense or an authentication mechanism. Unknown requests can receive an `ALLOW` label under the current rules; the label must not be used as a production authorization boundary. The caller-provided approval Boolean does not verify a human identity. Local logs may contain supplied message text and are not tamper-proof.
 
-## Features
+Production integration would need independently enforced tool permissions, argument validation, authenticated approval where required, suitable data handling and tests against the actual execution path.
 
-- Controlled interaction logic
-- Signal validation and filtering
-- Modular design for integration
-- Test coverage for core functionality
+## Reviewable workflow example
 
-## Files
-
-- `agent/agent_layer.py` → Core agent logic
-- `test_agent_layer.py` → Unit tests
-
-## Vision
-
-This is part of the FalconX system — an institutional-grade quantitative trading architecture focused on execution discipline, risk control, and real market behavior.
-
-## Status
-
-Active development
+For a separate Python/SQLite example with explicit approval scope, transactional changes and replay checks, see the [CRM demonstration](https://github.com/albdrani37-hash/FalconX/tree/main/examples/crm-review-demo) and [selected technical portfolio](https://github.com/albdrani37-hash/FalconX/blob/main/PORTFOLIO.md).
